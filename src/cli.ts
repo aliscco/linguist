@@ -15,17 +15,22 @@ program
   .command('file <path>')
   .description('detect a file')
   .action(async (pathPattern) => {
-    const info = await (new LocFile(pathPattern).getFileInfo());
-    // eslint-disable-next-line no-console
-    console.log(
-      chalk.cyan(`
-      path: \t\t${pathPattern}
-      language: \t${info.languages}
-      total lines: \t${String(info.lines.total)}
-      code lines: \t${String(info.lines.code)}
-      comment lines: \t${String(info.lines.comment)}
-    `),
-    );
+    try {
+      const info = await (new LocFile(pathPattern).getFileInfo());
+      // eslint-disable-next-line no-console
+      console.log(
+        chalk.cyan(`
+        path: \t\t${pathPattern}
+        language: \t${info.languages}
+        total lines: \t${String(info.lines.total)}
+        code lines: \t${String(info.lines.code)}
+        comment lines: \t${String(info.lines.comment)}
+      `),
+      );
+    } catch (e) {
+      console.error(e);
+      console.error(e.stacl);
+    }
   });
 
 const formatInfo = (
@@ -49,9 +54,14 @@ const formatInfo = (
     .join('')}`;
 
 program.arguments('<cmd> [env]').action(async (cmd) => {
-  const { info, languages } = await (new LocDir(slash(path.join(process.cwd(), cmd))).loadInfo());
-  // eslint-disable-next-line no-console
-  console.log(chalk.cyan(formatInfo(info, languages)));
+  try {
+    const { info, languages } = await (new LocDir(slash(path.join(process.cwd(), cmd))).loadInfo());
+    // eslint-disable-next-line no-console
+    console.log(chalk.cyan(formatInfo(info, languages)));
+  } catch (e) {
+    console.error(e);
+    console.error(e.stacl);
+  }
 });
 
 program.parse(process.argv);

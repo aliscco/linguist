@@ -73,8 +73,11 @@ export class LocDir {
 
     await Promise.all(paths.map(async (pathItem) => {
       const fullPath = slash(path.join(this.pattern, pathItem));
-      const stat = await fs.stat(fullPath);
-      if (!pathItem || !(await fs.pathExists(fullPath)) || stat.isDirectory()) {
+      if (
+        !pathItem ||
+        !(await fs.pathExists(fullPath)) ||
+        (await fs.stat(fullPath)).isDirectory()
+      ) {
         return;
       }
       const file = new LocFile(fullPath);
