@@ -48,7 +48,7 @@ describe('LocFile', () => {
     const tsPath = slash(path.join(__dirname, './'));
     const file = await loc(tsPath);
     const { info, languages } = file;
-    expect(Object.keys(languages).join()).toEqual('javascript,markdown,typescript');
+    expect(Object.keys(languages).sort().join()).toEqual('javascript,markdown,typescript');
     expect(info).toMatchSnapshot();
     expect(languages).toMatchSnapshot();
   });

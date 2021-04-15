@@ -3,8 +3,8 @@
 exports[`LocFile dir info 1`] = `
 Object {
   "code": 310,
-  "comment": 71,
-  "total": 448,
+  "comment": 68,
+  "total": 445,
 }
 `;
 
@@ -24,9 +24,9 @@ Object {
   },
   "typescript": Object {
     "code": 157,
-    "comment": 54,
+    "comment": 51,
     "sum": 2,
-    "total": 239,
+    "total": 236,
   },
 }
 `;

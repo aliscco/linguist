@@ -1,7 +1,7 @@
 {
-  "name": "@umijs/linguist",
-  "version": "1.0.1",
-  "description": "a tool to count the code in the repo",
+  "name": "@werdnagreb/linguist",
+  "version": "2.0.0",
+  "description": "A tool to count lines of code in a repository.",
   "keywords": [
     "loc",
     "cloc",
