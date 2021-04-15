@@ -1,7 +1,7 @@
 {
-  "name": "@werdnagreb/linguist",
+  "name": "github-linguist",
   "version": "2.0.1",
-  "description": "A tool to count lines of code in a repository.",
+  "description": "A tool to count lines of code in a repository powered by github-linguist langauge mappings.",
   "keywords": [
     "loc",
     "cloc",
