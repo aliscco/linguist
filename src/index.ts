@@ -5,6 +5,9 @@ import fs from 'fs-extra';
 import { LocDir } from './directory';
 import { LocFile, LineInfo } from './file';
 
+export { LocDir } from './directory';
+export { LocFile, LineInfo } from './file';
+
 const loc = async (
   fileOrDir: string,
 ): Promise<{
@@ -30,10 +33,5 @@ const loc = async (
   const locDir = new LocDir(slash(fileOrDir));
   return locDir.loadInfo();
 };
-
-loc.locDir = LocDir;
-loc.locFile = LocFile;
-
-module.exports = loc;
 
 export default loc;
