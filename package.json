@@ -9,24 +9,25 @@
     "umijs",
     "lines of code"
   ],
-  "homepage": "https://github.com/chenshuai2144/linguist#readme",
+  "homepage": "https://github.com/aeisenberg/linguist#readme",
   "bugs": {
-    "url": "https://github.com/chenshuai2144/linguist/issues"
+    "url": "https://github.com/aeisenberg/linguist/issues"
   },
   "bin": {
     "loc": "dist/cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chenshuai2144/linguist.git"
+    "url": "git+https://github.com/aeisenberg/linguist.git"
   },
   "license": "MIT",
   "authors": [
     "ephoton <i@ephoton.me> (https://github.com/ephoton)",
-    "chenshuai2144 <qixian.cs@outlook.com> (https://github.com/chenshuai2144)"
+    "chenshuai2144 <qixian.cs@outlook.com> (https://github.com/chenshuai2144)",
+    "Andrew Eisenberg <aeisenberg@github.com> (https://github.com/aeisenberg)"
   ],
-  "main": "build/src/index.js",
-  "typings": "build/src/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "directories": {
     "test": "test"
   },
@@ -40,11 +41,10 @@
   "dependencies": {
     "chalk": "^2.2.0",
     "commander": "^2.11.0",
-    "fs-extra": "^4.0.2",
+    "fs-extra": "^4.0.3",
     "globby": "^6.1.0",
     "language-map": "^1.3.0",
-    "slash2": "^2.0.0",
-    "umi-test": "^1.9.6"
+    "slash2": "^2.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
@@ -61,6 +61,7 @@
     "eslint": "^6.8.0",
     "np": "^6.2.0",
     "prettier": "^2.0.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "umi-test": "^1.9.6"
   }
 }

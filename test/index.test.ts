@@ -1,6 +1,3 @@
-/**
- *
- */
 import * as path from 'path';
 import slash from 'slash2';
 
@@ -26,9 +23,9 @@ describe('Languages', () => {
 });
 
 describe('LocFile', () => {
-  it('js info', () => {
+  it('js info', async () => {
     const jsPath = slash(path.join(__dirname, '/data/index.js'));
-    const file = loc(jsPath);
+    const file = await loc(jsPath);
     expect(file.files[0]).toEqual(jsPath);
     const { info, languages } = file;
     expect(Object.keys(languages).pop()).toEqual('javascript');
@@ -37,9 +34,9 @@ describe('LocFile', () => {
     expect(info.comment).toEqual(6);
   });
 
-  it('ts info', () => {
+  it('ts info', async () => {
     const tsPath = slash(path.join(__dirname, '/data/index.ts'));
-    const file = loc(tsPath);
+    const file = await loc(tsPath);
     const { info, languages } = file;
     expect(Object.keys(languages).pop()).toEqual('typescript');
     expect(info.total).toEqual(169);
@@ -47,21 +44,21 @@ describe('LocFile', () => {
     expect(info.comment).toEqual(50);
   });
 
-  it('dir info', () => {
+  it('dir info', async () => {
     const tsPath = slash(path.join(__dirname, './'));
-    const file = loc(tsPath);
+    const file = await loc(tsPath);
     const { info, languages } = file;
     expect(Object.keys(languages).join()).toEqual('javascript,markdown,typescript');
     expect(info).toMatchSnapshot();
     expect(languages).toMatchSnapshot();
   });
 
-  it('dir info', () => {
+  it('dir info', async () => {
     const tsPath = slash(path.join(__dirname, '../example'));
-    const file = loc(tsPath);
+    const file = await loc(tsPath);
     const { info, languages } = file;
-    expect(Object.keys(languages).join()).toEqual(
-      'typescript,javascript,json,,svg,markdown,less,ejs',
+    expect(Object.keys(languages).sort().join()).toEqual(
+      ',ejs,javascript,json,less,markdown,svg,typescript',
     );
     expect(info).toMatchSnapshot();
     expect(languages).toMatchSnapshot();

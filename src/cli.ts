@@ -14,8 +14,8 @@ program
   .version(getVersion(), '-v')
   .command('file <path>')
   .description('detect a file')
-  .action((pathPattern) => {
-    const info = new LocFile(pathPattern).getFileInfo();
+  .action(async (pathPattern) => {
+    const info = await (new LocFile(pathPattern).getFileInfo());
     // eslint-disable-next-line no-console
     console.log(
       chalk.cyan(`
@@ -48,8 +48,8 @@ const formatInfo = (
     })
     .join('')}`;
 
-program.arguments('<cmd> [env]').action((cmd) => {
-  const { info, languages } = new LocDir(slash(path.join(process.cwd(), cmd))).loadInfo();
+program.arguments('<cmd> [env]').action(async (cmd) => {
+  const { info, languages } = await (new LocDir(slash(path.join(process.cwd(), cmd))).loadInfo());
   // eslint-disable-next-line no-console
   console.log(chalk.cyan(formatInfo(info, languages)));
 });

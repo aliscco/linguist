@@ -5,9 +5,9 @@ import fs from 'fs-extra';
 import { LocDir } from './directory';
 import { LocFile, LineInfo } from './file';
 
-const loc = (
+const loc = async (
   fileOrDir: string,
-): {
+): Promise<{
   info: LineInfo;
   files: string[];
   languages: {
@@ -15,11 +15,11 @@ const loc = (
       sum: number;
     };
   };
-} => {
-  const stat = fs.statSync(slash(fileOrDir));
+}> => {
+  const stat = await fs.stat(slash(fileOrDir));
   if (stat.isFile()) {
     const locFile = new LocFile(slash(fileOrDir));
-    const info = locFile.getFileInfo();
+    const info = await locFile.getFileInfo();
     const filePath = locFile.getPath();
     return {
       info: info.lines,

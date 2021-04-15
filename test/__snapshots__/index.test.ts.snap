@@ -2,7 +2,7 @@
 
 exports[`LocFile dir info 1`] = `
 Object {
-  "code": 341,
+  "code": 310,
   "comment": 71,
   "total": 448,
 }
@@ -17,7 +17,7 @@ Object {
     "total": 83,
   },
   "markdown": Object {
-    "code": 114,
+    "code": 83,
     "comment": 11,
     "sum": 1,
     "total": 126,

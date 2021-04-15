@@ -2,7 +2,7 @@
  * detect file info
  */
 
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as Path from 'path';
 // @ts-ignore
 import slash from 'slash2';
@@ -47,6 +47,7 @@ const DefaultFileInfo: FileInfo = {
  */
 export class LocFile {
   private path: string;
+  private rawPath: string;
 
   private language = new Languages();
 
@@ -55,27 +56,24 @@ export class LocFile {
    * @param {string} filePath
    * @memberof LocFile
    */
-  constructor(filePath: string) {
-    if (!fs.existsSync(filePath)) {
-      throw new Error('Error in File: file now exits.');
-    }
-    this.path = slash(filePath);
+  constructor(rawPath: string) {
+    this.path = slash(rawPath);
+    this.rawPath = rawPath;
   }
 
   /**
    * get file type through a path
    *
-   * @private
    * @param {string} path
    * @returns {string}
    * @memberof LocFile
    */
-  getType(path: string): string {
+  private getType(path: string): string {
     const fileExtension = `.${path.split('.').pop()}`;
     return this.language.extensionMap[fileExtension] || '';
   }
 
-  public filterData = (data: string): LineInfo => {
+  private filterData = (data: string): LineInfo => {
     const lines = data.split(/\n/);
     let commentLength = 0;
     let codeLength = lines.length;
@@ -109,22 +107,25 @@ export class LocFile {
   };
 
   /**
-   * get file info when LocFile init
+   * Get file info when LocFile init
    *
-   * @private
    * @returns {FileInfo}
    * @memberof LocFile
    */
-  getFileInfo(data?: string): FileInfo {
+  public async getFileInfo(data?: string): Promise<FileInfo> {
+    if (!(await fs.pathExists(this.rawPath))) {
+      throw new Error(`Error: file ${this.rawPath} does not exist.`);
+    }
+
     let newData = data;
     const info: FileInfo = Object.assign({}, DefaultFileInfo);
     const name = this.path.split(Path.sep).pop() || '';
     try {
-      const stat = fs.statSync(this.path);
+      const stat = await fs.stat(this.path);
       if (!stat.isFile()) {
         return info;
       }
-      newData = data || fs.readFileSync(this.path, 'utf-8');
+      newData = data || await fs.readFile(this.path, 'utf-8');
       info.name = name;
       info.size = (stat && stat.size) || 0;
       info.languages = this.getType(this.path);

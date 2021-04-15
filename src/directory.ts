@@ -1,5 +1,5 @@
 import globby from 'globby';
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 // @ts-ignore
 import slash from 'slash2';
@@ -43,7 +43,7 @@ export class LocDir {
    *   }}
    * @memberof LocDir
    */
-  loadInfo(): {
+  async loadInfo(): Promise<{
     files: string[];
     info: LineInfo;
     languages: {
@@ -51,7 +51,7 @@ export class LocDir {
         sum: number;
       };
     };
-  } {
+  }> {
     const paths = globby.sync('**', {
       cwd: this.pattern,
       ignore: [
@@ -71,14 +71,14 @@ export class LocDir {
       };
     } = {};
 
-    paths.forEach((pathItem) => {
+    await Promise.all(paths.map(async (pathItem) => {
       const fullPath = slash(path.join(this.pattern, pathItem));
-      const stat = fs.statSync(fullPath);
-      if (!pathItem || !fs.existsSync(fullPath) || stat.isDirectory()) {
+      const stat = await fs.stat(fullPath);
+      if (!pathItem || !(await fs.pathExists(fullPath)) || stat.isDirectory()) {
         return;
       }
       const file = new LocFile(fullPath);
-      const fileLineInfo = file.getFileInfo();
+      const fileLineInfo = await file.getFileInfo();
       const { lines } = fileLineInfo;
       info.total += lines.total;
       info.code += lines.code;
@@ -93,7 +93,7 @@ export class LocDir {
         [fileLineInfo.languages]: language,
       };
       files.push(fullPath);
-    });
+    }));
 
     return {
       files,
