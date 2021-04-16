@@ -5,7 +5,6 @@ import loc from '../src';
 import { Languages } from '../src/languages';
 
 describe('Languages', () => {
-  beforeAll(() => {});
   describe('.getExtensionMap', () => {
     it('should return equals', () => {
       const map = new Languages().getExtensionMap();
@@ -29,9 +28,11 @@ describe('LocFile', () => {
     expect(file.files[0]).toEqual(jsPath);
     const { info, languages } = file;
     expect(Object.keys(languages).pop()).toEqual('javascript');
-    expect(info.total).toEqual(83);
-    expect(info.code).toEqual(69);
-    expect(info.comment).toEqual(6);
+    expect(info).toEqual({
+      total: 83,
+      code: 70,
+      comment: 5
+    });
   });
 
   it('ts info', async () => {
@@ -39,13 +40,15 @@ describe('LocFile', () => {
     const file = await loc(tsPath);
     const { info, languages } = file;
     expect(Object.keys(languages).pop()).toEqual('typescript');
-    expect(info.total).toEqual(169);
-    expect(info.code).toEqual(98);
-    expect(info.comment).toEqual(50);
+    expect(info).toEqual({
+      total: 169,
+      code: 100,
+      comment: 46
+    });
   });
 
-  it('dir info', async () => {
-    const tsPath = slash(path.join(__dirname, './'));
+  it('data dir info', async () => {
+    const tsPath = slash(path.join(__dirname, './data'));
     const file = await loc(tsPath);
     const { info, languages } = file;
     expect(Object.keys(languages).sort().join()).toEqual('javascript,markdown,typescript');
@@ -53,7 +56,7 @@ describe('LocFile', () => {
     expect(languages).toMatchSnapshot();
   });
 
-  it('dir info', async () => {
+  it('example dir info', async () => {
     const tsPath = slash(path.join(__dirname, '../example'));
     const file = await loc(tsPath);
     const { info, languages } = file;

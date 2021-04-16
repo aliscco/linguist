@@ -1,45 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LocFile dir info 1`] = `
+exports[`LocFile data dir info 1`] = `
 Object {
-  "code": 310,
-  "comment": 68,
-  "total": 445,
+  "code": 264,
+  "comment": 51,
+  "total": 378,
 }
 `;
 
-exports[`LocFile dir info 2`] = `
+exports[`LocFile data dir info 2`] = `
 Object {
   "javascript": Object {
     "code": 70,
-    "comment": 6,
+    "comment": 5,
     "sum": 1,
     "total": 83,
   },
   "markdown": Object {
-    "code": 83,
-    "comment": 11,
+    "code": 94,
+    "comment": 0,
     "sum": 1,
     "total": 126,
   },
   "typescript": Object {
-    "code": 157,
-    "comment": 51,
-    "sum": 2,
-    "total": 236,
+    "code": 100,
+    "comment": 46,
+    "sum": 1,
+    "total": 169,
   },
 }
 `;
 
-exports[`LocFile dir info 3`] = `
+exports[`LocFile example dir info 1`] = `
 Object {
-  "code": 5223,
-  "comment": 231,
+  "code": 5200,
+  "comment": 234,
   "total": 5950,
 }
 `;
 
-exports[`LocFile dir info 4`] = `
+exports[`LocFile example dir info 2`] = `
 Object {
   "": Object {
     "code": 0,
@@ -54,20 +54,20 @@ Object {
     "total": 215,
   },
   "javascript": Object {
-    "code": 45,
-    "comment": 28,
+    "code": 44,
+    "comment": 29,
     "sum": 2,
     "total": 81,
   },
   "json": Object {
-    "code": 54,
-    "comment": 4,
+    "code": 50,
+    "comment": 10,
     "sum": 3,
     "total": 61,
   },
   "less": Object {
-    "code": 489,
-    "comment": 2,
+    "code": 488,
+    "comment": 3,
     "sum": 12,
     "total": 558,
   },
@@ -84,8 +84,8 @@ Object {
     "total": 2,
   },
   "typescript": Object {
-    "code": 4398,
-    "comment": 197,
+    "code": 4381,
+    "comment": 192,
     "sum": 85,
     "total": 4975,
   },

@@ -12,56 +12,56 @@ const defaultInfo: LineInfo = {
   comment: 0,
 };
 
+export interface LocDirOptions {
+  cwd?: string;
+  include?: string[] | string;
+  exclude?: string[] | string;
+}
+
+export interface LocResult {
+  files: string[];
+  info: LineInfo;
+  languages: {
+    [key: string]: LineInfo & {
+      sum: number;
+    };
+  };
+}
+
+const defaultExclude = [
+  // javascript
+  '**/*.map',
+  '**/yarn**',
+  '**/.github',
+  '**/node_modules/**',
+  '**/dist/**',
+  '**/*.snap',
+
+  // java
+  '**/target'
+];
+
 /**
- * Collect info of a directory.
- *
- * @export
- * @class LocDir
+ * Collect the info of a directory.
  */
 export class LocDir {
-  private pattern: string;
+  private cwd: string;
+  private include: string[];
+  private exclude: string[];
 
-  /**
-   * Creates an instance of LocDir.
-   * @param {string} pattern
-   * @memberof LocDir
-   */
-  constructor(pattern: string) {
-    this.pattern = pattern;
+  constructor(options: LocDirOptions) {
+    this.exclude = ensureArray(options.exclude).concat(defaultExclude);
+    this.include = ensureArray(options.include, '**');
+    this.cwd = options.cwd || process.cwd();
   }
 
   /**
-   * load directory info.
-   *
-   * @private
-   * @returns {{
-   *     files: LangFile[],
-   *     info: LineInfo,
-   *     languages: {
-   *       [key: string]: number;
-   *     }
-   *   }}
-   * @memberof LocDir
+   * Calculate directory info.
    */
-  async loadInfo(): Promise<{
-    files: string[];
-    info: LineInfo;
-    languages: {
-      [key: string]: LineInfo & {
-        sum: number;
-      };
-    };
-  }> {
-    const paths = globby.sync('**', {
-      cwd: this.pattern,
-      ignore: [
-        '**/*.map',
-        '**/yarn**',
-        '**/.github',
-        '**/node_modules/**',
-        '**/dist/**',
-        '**/*.snap',
-      ],
+  async loadInfo(): Promise<LocResult> {
+    const paths = await globby(this.include, {
+      cwd: this.cwd,
+      ignore: this.exclude,
     });
     const files: string[] = [];
     const info: LineInfo = { ...defaultInfo };
@@ -72,7 +72,7 @@ export class LocDir {
     } = {};
 
     await Promise.all(paths.map(async (pathItem) => {
-      const fullPath = slash(path.join(this.pattern, pathItem));
+      const fullPath = slash(path.join(this.cwd, pathItem));
       if (
         !pathItem ||
         !(await fs.pathExists(fullPath)) ||
@@ -104,14 +104,13 @@ export class LocDir {
       languages,
     };
   }
+}
 
-  /**
-   * Return detect pattern of the directory.
-   *
-   * @returns {string}
-   * @memberof LocDir
-   */
-  public getPattern(): string {
-    return this.pattern;
+function ensureArray(arr?: string[] | string, dfault?: string) {
+  if (!arr) {
+    return dfault ? [dfault] : [];
   }
+  return Array.isArray(arr)
+    ? arr
+    : [arr];
 }

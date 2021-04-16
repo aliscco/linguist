@@ -13,7 +13,7 @@ import { getVersion } from './utils';
 program
   .version(getVersion(), '-v')
   .command('file <path>')
-  .description('detect a file')
+  .description('count lines of code in a file')
   .action(async (pathPattern) => {
     try {
       const info = await (new LocFile(pathPattern).getFileInfo());
@@ -47,7 +47,7 @@ const formatInfo = (
   \t--------------------${Object.keys(languages)
     .map((key) => {
       const languageInfo = languages[key];
-      return `\n\t${key.padEnd(10)} \t sum:${String(languageInfo.sum)} \ttotal:${String(
+      return `\n\t${key.padEnd(10)} \t file count:${String(languageInfo.sum)} \ttotal:${String(
         languageInfo.total,
       )}  \tcomment:${String(languageInfo.comment)}  \tcode:${String(languageInfo.code)}`;
     })
@@ -55,7 +55,9 @@ const formatInfo = (
 
 program.arguments('<cmd> [env]').action(async (cmd) => {
   try {
-    const { info, languages } = await (new LocDir(slash(path.join(process.cwd(), cmd))).loadInfo());
+    const { info, languages } = await (new LocDir({
+      include: cmd
+    }).loadInfo());
     // eslint-disable-next-line no-console
     console.log(chalk.cyan(formatInfo(info, languages)));
   } catch (e) {
