@@ -50,8 +50,18 @@ export class LocDir {
   private exclude: string[];
 
   constructor(options: LocDirOptions) {
-    this.exclude = ensureArray(options.exclude).concat(defaultExclude);
-    this.include = ensureArray(options.include, '**');
+
+    // ensure all excludes are globstar. Note that '**/*.ts/**' matches files
+    // that end in .ts because the globstar indicates 0 or more directory paths.
+    this.exclude = ensureArray(options.exclude)
+      .concat(defaultExclude)
+      .map(item => item.endsWith('**') ? item : `${item}/**`);
+
+    // remove all leading './' since this messes up globstar matches in the
+    // excludes.
+    this.include = ensureArray(options.include, '**')
+      .map(item => item.startsWith('./') ? item.substring(2) : item)
+      .map(item => item.endsWith('**') ? item : `${item}/**`);
     this.cwd = options.cwd || process.cwd();
   }
 
@@ -62,6 +72,7 @@ export class LocDir {
     const paths = await globby(this.include, {
       cwd: this.cwd,
       ignore: this.exclude,
+      nodir: true
     });
     const files: string[] = [];
     const info: LineInfo = { ...defaultInfo };
