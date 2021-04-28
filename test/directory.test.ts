@@ -48,6 +48,37 @@ describe('Directory', () => {
     });
   });
 
+  it('should calculate info for a directory only for specified languages', async () => {
+    await doTest({
+      analysisLanguages: ['javascript', 'python'],
+      cwd: __dirname + '/data2'
+    }, {
+      files: [
+        'data2/x.js',
+        'data2/x.py',
+      ],
+      info: {
+        code: 12,
+        comment: 13,
+        total: 36,
+      },
+      languages: {
+        javascript: {
+          code: 5,
+          comment: 5,
+          sum: 1,
+          total: 17,
+        },
+        python: {
+          code: 7,
+          comment: 8,
+          sum: 1,
+          total: 19,
+        }
+      }
+    });
+  });
+
   it('should calculate using multiple includes', async () => {
     await doTest({
       cwd: __dirname + '/data3/a',
